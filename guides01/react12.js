@@ -8,8 +8,21 @@ const vCurrency = {
 }
 //全局函数，方便全局和子组件能够访问
 function exchange(value, type) {
-    return value * (type === '$' ? exchangeRate : 1 / exchangeRate)
+
+    let result=value * (type === '$' ? exchangeRate : 1 / exchangeRate)
+    console.log('value:'+value+' type:'+type+'  result:'+result);
+    return result
 }
+
+//美元  类型
+//function exchangeValue(value, type){
+//    if(type==='$'){
+//        return type==='$'?value*exchange:value
+//    }else{
+//        return type==='￥'?value:value*exchange
+//
+//    }
+//}
 
 class CurrencyInput extends React.Component {
     constructor(props) {
@@ -18,6 +31,7 @@ class CurrencyInput extends React.Component {
     }
 
     changeHandler(e) {
+        console.log('change  value: '+e.target.value+'   currency:'+this.props.currency)
         this.props.onValueChange(e.target.value, this.props.currency)
     }
 
@@ -54,6 +68,7 @@ class App extends React.Component {
     }
 
     valueChangeHandler(value, type) {
+        console.log('valueChangeHandler value:'+value+' type:'+type);
         this.setState({
                 currentCurrency: {
                     value, type
@@ -69,8 +84,9 @@ class App extends React.Component {
                                currency={'$'} onValueChange={this.valueChangeHandler}/>
                 <CurrencyInput currentCurrency={this.state.currentCurrency}
                                currency={'￥'} onValueChange={this.valueChangeHandler}/>
-                <p>我们有{exchange(this.state.currentCurrency.value, '$')}美元，
-                    也就是{exchange(this.state.currentCurrency.value, '￥')}元</p>
+
+                <p>我们有{this.state.currentCurrency.value}美元，
+                    也就是{exchange(this.state.currentCurrency.value,'$')}元</p>
             </div>
         )
     }
